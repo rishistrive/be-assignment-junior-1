@@ -1,0 +1,26 @@
+<div id="settleup" class="modal fade" aria-hidden="true" aria-labelledby="settleupLabel" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="settleupLabel">Settle Up</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% if @settle_up.any? %>
+          <% @settle_up.each do |user_data| %>
+            <div class="user-detail">
+              <img class="user-img" alt="profile" src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" />
+              <div class="user-info">
+                <p><%= user_data[:name] %></p>
+                <p>Owes you $<%= user_data[:share_amount] %></p>
+                <%= button_to "Pay", settle_up_expenses_path(user_data), method: :patch, class: "btn btn-primary" %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p>Nothing to Settle</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

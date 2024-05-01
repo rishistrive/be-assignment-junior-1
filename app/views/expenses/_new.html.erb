@@ -1,0 +1,89 @@
+<div id="expenseModal" class="modal fade" aria-hidden="true" aria-labelledby="expenseModalLabel" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="expenseModalLabel">Add Expense</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <%= javascript_pack_tag 'expense'%>
+        <%= form_with(model: @expense, url: expenses_path, method: :post) do |form| %>
+          <% if @expense.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
+              <ul>
+                <% @expense.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="field">
+            <%= form.label :description %>
+            <%= form.text_field :description, required: true %>
+          </div>
+
+          <div class="field">
+            <%= form.label :paid_by %>
+            <%= form.collection_select :paid_by, @users, :id, :name, { include_blank: 'Please Select' }, { required: true } %>
+          </div>
+
+          <div class="field">
+            <%= form.label :participants, "Participants" %>
+            <% @users.each_with_index do |user, index| %>
+              <div>
+                <%= check_box_tag "expense[participants_attributes][#{index}][user_id]", user.id, false %>
+                <%= label_tag "expense_participant_ids_#{user.id}", user.name %>
+              </div>
+            <% end %>
+          </div>
+
+          <div id="items">
+            <% counter = 1 %>
+            <%= form.fields_for :items do |item_form| %>
+              <div class="item_fields">
+                <h6>Item <%= counter %></h6>
+                <div class="field">
+                  <%= item_form.label :name %>
+                  <%= item_form.text_field :name, required: true %>
+                </div>
+
+                <div class="field">
+                  <%= item_form.label :price %>
+                  <%= item_form.text_field :price, required: true %>
+                </div>
+
+                <div class="field">
+                  <%= item_form.label :quantity %>
+                  <%= item_form.text_field :quantity, required: true %>
+                </div>
+              </div>
+              <% counter += 1 %>
+            <% end %>
+          </div>
+
+          <div class="actions">
+            <%= button_tag(type: 'button', id: 'add-item') do %>
+              Add Item
+            <% end %>
+          </div>
+
+          <div class="field">
+            <%= form.label :tax %>
+            <%= form.text_field :tax %>
+          </div>
+
+          <div class="field">
+            <%= form.label :tip %>
+            <%= form.text_field :tip %>
+          </div>
+
+          <div class="actions">
+            <%= form.submit %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

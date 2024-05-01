@@ -1,0 +1,37 @@
+<% @users.each do |user| %>
+  <div id="userexpenseModal_<%= user.id %>" class="modal fade" aria-hidden="true" aria-labelledby="expenseModalLabel" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5><%= user.name %>'s Expenses</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <% if @user_expenses[user.id].any? %>
+            <ul>
+              <% @user_expenses[user.id].each do |expense| %>
+                <li>
+                  <strong>Date:</strong> <%= expense.created_at %><br>
+                  <strong>Description:</strong> <%= expense.description %><br>
+                  <strong>Paid by:</strong> <%= expense.paid_by_user.name %><br>
+                  <% if expense.participants.exists?(user_id: current_user.id) %>
+                    <% participant = expense.participants.find_by(user_id: current_user.id) %>
+                    <% if participant.paid %>
+                      <strong>Status:</strong> Paid
+                    <% else %>
+                      <strong>Status:</strong> Not Paid
+                    <% end %>
+                  <% else %>
+                    <strong>Status:</strong> Not Participated
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p>No Expense Created</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
