@@ -1,0 +1,70 @@
+<div class="dashboard-wrapper">
+  <aside class="side-bar-area" style="background-color: #f0f0f0;">
+    <div class="friends-list">
+      <h3  style="background-color: #ccc">FRIENDS</h3>
+      <% @users.each do |user| %>
+        <%= link_to user.name, "#", class: "btn text-start", data: { bs_toggle: "modal", bs_target: "#userexpenseModal_#{user.id}" }, style: "background-color: #f0f0f0; padding: 10px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease-in-out;", onmouseover: "this.style.backgroundColor='#ddd'", onmouseout: "this.style.backgroundColor='#f0f0f0'" %>
+      <% end %>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <div class="top-bar">
+      <h1 class="top-bar-title">Dashboard</h1>
+      <div class="top-bar-actions">
+        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#expenseModal">Add an expense</button>
+        <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#settleup">Settle up</button>
+      </div>
+    </div>
+    <div class="dashboard-balances">
+      <div class="balances-bar">
+        <div class="balance-block">
+          <p>total balance</p>
+          <%="$#{@total_balance}"%>
+        </div>
+        <div class="balance-block">
+          <p>you owe</p>
+          <%="$#{@total_you_owe}"%>
+        </div>
+        <div class="balance-block">
+          <p>you are owed</p>
+          <%="$#{@total_your_are_owed}"%>
+        </div>
+      </div>
+
+      <div class="dashboard-detail">
+        <div class="detail-block">
+          <h2 class="detail-title">You Owe</h2>
+          <% @you_owe_to_other.each do |user_data| %>
+            <div class="user-detail">
+              <img class="user-img" alt="profile" src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" />
+              <div class="user-info">
+                <p><%= user_data[0] %></p>
+                <p>Owes you $<%= user_data[1] %></p>
+                <p><%= user_data[2] ? 'Paid' : 'Not Paid' %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="detail-block">
+          <h2 class="detail-title">You Are Owed</h2>
+          <% @you_owed_by_other.each do |user_data| %>
+            <div class="user-detail">
+              <img class="user-img" alt="profile" src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" />
+              <div class="user-info">
+                <p><%= user_data[0] %></p>
+                <p>Owed you $<%= user_data[1] %></p>
+                <p><%= user_data[2] ? 'Paid' : 'Not Paid' %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= render "expenses/new"%>
+<%= render "expenses/user_expense"%>
+<%= render "expenses/settle_up"%>
