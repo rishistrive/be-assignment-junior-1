@@ -35,6 +35,7 @@ group :test do
   gem 'webdrivers'
   gem 'rspec-rails', '~> 6.1.0'
   gem 'shoulda-matchers'
+  gem 'rails-controller-testing'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
